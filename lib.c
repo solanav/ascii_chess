@@ -55,3 +55,36 @@ char intToLetter(int pieceInt)
     }
     
 }
+
+void initBoard(int pieces[][BOARD_SIZE])
+{
+    int x, y;
+    int z = 1;
+
+    for (x = 0; x <= 7; x += 7)
+    {   
+        pieces[x][0] = z * ROOK;
+        pieces[x][1] = z * KNIGHT;
+        pieces[x][2] = z * BISHOP;
+        pieces[x][3] = z * QUEEN;
+        pieces[x][4] = z * KING;
+        pieces[x][5] = z * BISHOP;
+        pieces[x][6] = z * KNIGHT;
+        pieces[x][7] = z * ROOK;
+
+        z = -1;
+    }
+
+    z = 1;
+
+    for (x = 1; x <= 6; x += 5)
+    {
+        for (y = 0; y <= 7; y++)
+        {
+            pieces[x][y] = z * PAWN;
+        }
+        z = -1;
+    }
+
+    
+}
