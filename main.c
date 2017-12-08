@@ -1,56 +1,21 @@
-#include <stdio.h>
-#include <ctype.h>
+#include "stdio.h"
+#include "ctype.h"
+#include "lib.h"
 
-#define BOARD_SIZE 8
-
-#define NONE    0
-#define KING    1
-#define QUEEN   2
-#define ROOK    3
-#define BISHOP  4
-#define KNIGHT  5
-#define PAWN    6
-
-void drawBoard(int pieces[][BOARD_SIZE]);
-void initBoard(int pieces[][BOARD_SIZE]);
-int drawMove(int * whiteBlack);
-char intToLetter(int pieceInt);
-
-char intToLetter(int pieceInt)
+void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
 {
-    if (pieceInt < 0)
-    {
-        pieceInt *= -1;
-    }
+    char tempPosChar;
+    int tempPosInt;
 
-    switch(pieceInt)
-    {
-        case 0:
-            return '.';
-        case 1:
-            return 'k';
-        case 2:
-            return 'q';
-        case 3:
-            return 'r';
-        case 4:
-            return 'b';
-        case 5:
-            return 'n';
-        case 6:
-            return 'p';
-        default:
-            return 'X';
-    }
-    
-}
-
-int drawMove(int * whiteBlack)
-{
     if (*whiteBlack == 0)
     {
-        printf("White moves\nPiece >>> ");
-        scanf("%d")
+        printf("White moves\nMove from >>> ");
+        tempPosChar = getchar();
+        scanf("%d", &tempPosInt);
+        
+        printf("Move to >>> ");
+        scanf("%d", pieceNewPos);
+
         *whiteBlack++;
     }
     else
@@ -95,7 +60,7 @@ void initBoard(int pieces[][BOARD_SIZE])
     
 }
 
-void drawBoard(int pieces[][BOARD_SIZE])
+void drawBoard(int pieces[][BOARD_SIZE], int lastMove, int whiteBlack)
 {
     int x, y;
 
@@ -125,15 +90,17 @@ void drawBoard(int pieces[][BOARD_SIZE])
 int main()
 {
     int pieces[BOARD_SIZE][BOARD_SIZE] = {0};
-    int gameNotFinished = 0;
+    int gameFinished = 0;
     int whiteBlack = 0;
-    int userMove;
+    int pieceToMove;
+    int pieceNewPos;
 
     initBoard(pieces);
 
-    while (gameNotFinished == 0)
+    while (gameFinished == 0)
     {
-        userMove = drawMove(&whiteBlack);
+        getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
+        drawBoard(pieces, 45, whiteBlack);
     }
 
     return 0;
