@@ -4,35 +4,58 @@
 
 void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
 {
+    char temp;
+
     char tempPosChar;
     int tempPosInt;
 
+    char tempNextPosChar;
+    int tempNextPosInt;
+
     if (*whiteBlack == 0)
     {
-        printf("White moves\nMove from >>> ");
+        printf("\nWhite moves\nMove from >>> ");
+        tempPosChar = getchar();
+        scanf("%d", &tempPosInt);
+
+        scanf("%c", &temp);
+        
+        printf("Move to >>> ");
+        tempNextPosChar = getchar();
+        scanf("%d", &tempNextPosInt);
+
+        *whiteBlack = 1;
+
+        scanf("%c", &temp);
+    }
+    else
+    {
+        printf("\nBlack moves\nMove from >>> ");
         tempPosChar = getchar();
         scanf("%d", &tempPosInt);
         
         printf("Move to >>> ");
-        scanf("%d", pieceNewPos);
+        tempNextPosChar = getchar();
+        scanf("%d", &tempNextPosInt);
 
-        *whiteBlack++;
-    }
-    else
-    {
-        printf("Black moves\n>>> ");
+        *whiteBlack = 0;
 
-        *whiteBlack--;
+        scanf("%c", &temp);
+        scanf("%c", &temp);
     }
+
+    *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
+    *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
 
 }
 
-void drawBoard(int pieces[][BOARD_SIZE], int lastMove, int whiteBlack)
+void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
 {
     int x, y;
 
+    printf("\nLast move: %d\n", *lastMove);
     printf("\n");
-    printf("     a  a  a  a  a  a  a  a\n\n");
+    printf("     a  b  c  d  e  f  g  h\n\n");
 
     for (x = 0; x < 8; x++)
     {   
@@ -67,7 +90,7 @@ int main()
     while (gameFinished == 0)
     {
         getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
-        drawBoard(pieces, 45, whiteBlack);
+        drawBoard(pieces, &pieceNewPos, whiteBlack);
     }
 
     return 0;

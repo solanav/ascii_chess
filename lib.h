@@ -11,7 +11,7 @@
 #define KNIGHT  5
 #define PAWN    6
 
-void drawBoard(int pieces[][BOARD_SIZE], int lastMove, int whiteBlack);
+void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack);
 void initBoard(int pieces[][BOARD_SIZE]);
 void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos);
 char intToLetter(int pieceInt);
