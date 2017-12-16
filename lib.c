@@ -123,7 +123,6 @@ void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE]
     }
     
     pieces[newCoordLetter][newCoordNumber]=valuePiece;
-    
 }    
 
     
