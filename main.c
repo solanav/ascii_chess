@@ -34,18 +34,21 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
         tempPosChar = getchar();
         scanf("%d", &tempPosInt);
 
+        scanf("%c", &temp);
+
         printf("Move to >>> ");
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
 
-        *whiteBlack = 0;
+        *whiteBlack = 1;
 
-        scanf("%c", &temp);
         scanf("%c", &temp);
     }
 
     *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
     *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
+
+    printf("\nDEBUG: GETUSERMOVE OK");
 
 }
 
@@ -75,6 +78,8 @@ void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
     }
     printf("\n");
 
+    printf("\nDEBUG: DRAWBOARD OK");
+
 }
 
 int main()
@@ -91,7 +96,7 @@ int main()
     while (gameFinished == 0)
     {
         getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
-        movepiece(&pieceToMove, &pieceNewPos, pieces);
+        movePiece(&pieceToMove, &pieceNewPos, &pieces);
         drawBoard(pieces, &pieceNewPos, whiteBlack);
     }
 
