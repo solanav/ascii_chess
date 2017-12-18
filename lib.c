@@ -88,11 +88,14 @@ void initBoard(int pieces[][BOARD_SIZE])
 
 
 }
-void movepiece(int *pieceToMove, int *pieceNewPosition,int (*pieces)[][BOARD_SIZE])
+void movepiece(int *pieceToMove, int *pieceNewPosition,int pieces[][BOARD_SIZE])
 {
     int valuePiece;
     int coordLetter, coordNumber;
     int newCoordLetter,newCoordNumber;
+    int (*board)[][BOARD_SIZE];
+
+    board= &pieces;
 
     coordNumber=*pieceToMove%10;
     if(coordNumber>7)
@@ -106,7 +109,7 @@ void movepiece(int *pieceToMove, int *pieceNewPosition,int (*pieces)[][BOARD_SIZ
         printf("Wrong coordinates\n");
         //Idem
     }
-    valuePiece=(*pieces)[coordLetter][coordNumber];
+    valuePiece=(*board)[coordLetter][coordNumber];
 
     newCoordNumber=*pieceNewPosition%10;
     if(newCoordNumber>7)
@@ -121,6 +124,6 @@ void movepiece(int *pieceToMove, int *pieceNewPosition,int (*pieces)[][BOARD_SIZ
         //Idem
     }
 
-    (*pieces)[coordLetter][coordNumber]=0;
-    (*pieces)[newCoordLetter][newCoordNumber]=valuePiece;
+    (*board)[coordLetter][coordNumber]=0;
+    (*board)[newCoordLetter][newCoordNumber]=valuePiece;
 }

@@ -14,7 +14,7 @@
 void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack);
 void initBoard(int pieces[][BOARD_SIZE]);
 void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos);
-void movepiece(int *pieceToMove, int *pieceNewPosition, int (*pieces)[][BOARD_SIZE]);
+void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE]);
 char intToLetter(int pieceInt);
 int coordsToInt(char coords);
 

@@ -91,7 +91,7 @@ int main()
     while (gameFinished == 0)
     {
         getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
-        movepiece(&pieceToMove, &pieceNewPos, &pieces);
+        movepiece(&pieceToMove, &pieceNewPos, pieces);
         drawBoard(pieces, &pieceNewPos, whiteBlack);
     }
 
