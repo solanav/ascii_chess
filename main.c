@@ -58,11 +58,11 @@ void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
 
     printf("\nLast move: %d\n", *lastMove);
     printf("\n");
-    printf("     a  b  c  d  e  f  g  h\n\n");
+    printf("     0  1  2  3  4  5  6  7\n\n");
 
     for (x = 0; x < 8; x++)
     {
-        printf(" %d  ", x+1);
+        printf(" %c  ", x+97);
         for (y = 0; y < 8; y++)
         {
             if (pieces[x][y] < 0)

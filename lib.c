@@ -124,5 +124,5 @@ void movePiece(int *pieceToMove, int *pieceNewPosition, int (*pieces)[][BOARD_SI
     (*pieces)[coordLetter][coordNumber]=0;
     (*pieces)[newCoordLetter][newCoordNumber]=valuePiece;
 
-    printf("DEBUG: MOVEPIECE OK");
+    printf("\nDEBUG: MOVEPIECE OK");
 }
