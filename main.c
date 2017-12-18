@@ -86,10 +86,12 @@ int main()
     int pieceNewPos;
 
     initBoard(pieces);
+    drawboard(pieces, &pieceNewPos, whiteBlack);
 
     while (gameFinished == 0)
     {
         getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
+        movepiece(&pieceToMove, &pieceNewPos, pieces);
         drawBoard(pieces, &pieceNewPos, whiteBlack);
     }
 
