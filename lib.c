@@ -107,7 +107,6 @@ void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE]
         //Idem
     }
     valuePiece=pieces[coordLetter][coordNumber];
-    pieces[coordLetter][coordNumber]=0;
     
     newCoordNumber=*pieceNewCoord%10;
     if(newCoordNumber>7)
@@ -122,6 +121,7 @@ void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE]
         //Idem
     }
     
+    pieces[coordLetter][coordNumber]=0;
     pieces[newCoordLetter][newCoordNumber]=valuePiece;
 }    
 
