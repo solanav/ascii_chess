@@ -53,7 +53,7 @@ char intToLetter(int pieceInt)
         default:
             return 'X';
     }
-    
+
 }
 
 void initBoard(int pieces[][BOARD_SIZE])
@@ -62,7 +62,7 @@ void initBoard(int pieces[][BOARD_SIZE])
     int z = 1;
 
     for (x = 0; x <= 7; x += 7)
-    {   
+    {
         pieces[x][0] = z * ROOK;
         pieces[x][1] = z * KNIGHT;
         pieces[x][2] = z * BISHOP;
@@ -86,43 +86,41 @@ void initBoard(int pieces[][BOARD_SIZE])
         z = -1;
     }
 
-    
+
 }
-void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE])
+void movepiece(int *pieceToMove, int *pieceNewPosition,int (*pieces)[][BOARD_SIZE])
 {
     int valuePiece;
     int coordLetter, coordNumber;
-    int newCoordLetter,NewCoordNumber;
-    
+    int newCoordLetter,newCoordNumber;
+
     coordNumber=*pieceToMove%10;
     if(coordNumber>7)
     {
-        printf("Wrong coordinates");
+        printf("Wrong coordinates\n");
         //Insert something to make the user go back and change them coordinates
     }
-    coordLetter=(*pieceToMove-coordNumber)/10;//Maybe I don't need to subtract that since it's an int(?)
+    coordLetter=(*pieceToMove-coordNumber)/10;
     if(coordLetter>7)
     {
-        printf("Wrong coordinates");
+        printf("Wrong coordinates\n");
         //Idem
     }
-    valuePiece=pieces[coordLetter][coordNumber];
-    
-    newCoordNumber=*pieceNewCoord%10;
+    valuePiece=(*pieces)[coordLetter][coordNumber];
+
+    newCoordNumber=*pieceNewPosition%10;
     if(newCoordNumber>7)
     {
-        printf("Wrong coordinates");
+        printf("Wrong coordinates\n");
         //Insert something to make the user go back and change them coordinates
     }
-    newCoordLetter=(*pieceNewCoord-coordNumber)/10;//Maybe I don't need to subtract that since it's an int(?)
+    newCoordLetter=(*pieceNewPosition-newCoordNumber)/10;//Maybe I don't need to subtract that since it's an int(?)
     if(newCoordLetter>7)
     {
-        printf("Wrong coordinates");
+        printf("Wrong coordinates\n");
         //Idem
     }
-    
-    pieces[coordLetter][coordNumber]=0;
-    pieces[newCoordLetter][newCoordNumber]=valuePiece;
-}    
 
-    
+    (*pieces)[coordLetter][coordNumber]=0;
+    (*pieces)[newCoordLetter][newCoordNumber]=valuePiece;
+}

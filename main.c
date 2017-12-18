@@ -19,7 +19,7 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
         scanf("%d", &tempPosInt);
 
         scanf("%c", &temp);
-        
+
         printf("Move to >>> ");
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
@@ -33,7 +33,7 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
         printf("\nBlack moves\nMove from >>> ");
         tempPosChar = getchar();
         scanf("%d", &tempPosInt);
-        
+
         printf("Move to >>> ");
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
@@ -58,7 +58,7 @@ void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
     printf("     a  b  c  d  e  f  g  h\n\n");
 
     for (x = 0; x < 8; x++)
-    {   
+    {
         printf(" %d  ", x+1);
         for (y = 0; y < 8; y++)
         {
@@ -86,12 +86,12 @@ int main()
     int pieceNewPos;
 
     initBoard(pieces);
-    drawboard(pieces, &pieceNewPos, whiteBlack);
+    drawBoard(pieces, &pieceNewPos, whiteBlack);
 
     while (gameFinished == 0)
     {
         getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
-        movepiece(&pieceToMove, &pieceNewPos, pieces);
+        movepiece(&pieceToMove, &pieceNewPos, &pieces);
         drawBoard(pieces, &pieceNewPos, whiteBlack);
     }
 
