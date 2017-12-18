@@ -91,25 +91,22 @@ void initBoard(int pieces[][BOARD_SIZE])
 void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE])
 {
     int valuePiece;
-    int *board[][BOARD_SIZE];
     int coordLetter, coordNumber;
     int newCoordLetter,NewCoordNumber;
-    
-    board=&pieces[][BOARD_SIZE];
     
     coordNumber=*pieceToMove%10;
     if(coordNumber>7)
     {
-        printf("Wrong coordinates\n");
+        printf("Wrong coordinates");
         //Insert something to make the user go back and change them coordinates
     }
-    coordLetter=(*pieceToMove-/*coordNumber*/)/10;//I don't need to subtract that since it's an int, but its the same result
+    coordLetter=(*pieceToMove-coordNumber)/10;//Maybe I don't need to subtract that since it's an int(?)
     if(coordLetter>7)
     {
-        printf("Wrong coordinates\n");
+        printf("Wrong coordinates");
         //Idem
     }
-    valuePiece=*board[coordLetter][coordNumber];
+    valuePiece=pieces[coordLetter][coordNumber];
     
     newCoordNumber=*pieceNewCoord%10;
     if(newCoordNumber>7)
@@ -124,8 +121,8 @@ void movepiece(int *pieceToMove, int *pieceNewPosition, int pieces[][BOARD_SIZE]
         //Idem
     }
     
-    *board[coordLetter][coordNumber]=0;
-    *board[newCoordLetter][newCoordNumber]=valuePiece;
+    pieces[coordLetter][coordNumber]=0;
+    pieces[newCoordLetter][newCoordNumber]=valuePiece;
 }    
 
     
