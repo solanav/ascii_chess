@@ -2,26 +2,36 @@
 #include <ctype.h>
 #include "lib.h"
 
+void clear(int lines)
+{
+    int x;
+
+    for (x = 0; x < lines; x++)
+    {
+        printf("\n");
+    }
+}
+
 int coordsToInt(char coords)
 {
     switch (coords)
     {
         case 'a':
-            return 0;
-        case 'b':
             return 1;
-        case 'c':
+        case 'b':
             return 2;
-        case 'd':
+        case 'c':
             return 3;
-        case 'e':
+        case 'd':
             return 4;
-        case 'f':
+        case 'e':
             return 5;
-        case 'g':
+        case 'f':
             return 6;
-        case 'h':
+        case 'g':
             return 7;
+        case 'h':
+            return 8;
         default:
             return -1;
     }
@@ -56,74 +66,109 @@ char intToLetter(int pieceInt)
 
 }
 
-void initBoard(int pieces[][BOARD_SIZE])
+void initBoard(int (*pieces)[][BOARD_SIZE])
 {
-    int x, y;
-    int z = 1;
+    (*pieces)[8][1] = +ROOK;
+    (*pieces)[8][2] = +KNIGHT;
+    (*pieces)[8][3] = +BISHOP;
+    (*pieces)[8][4] = +QUEEN;
+    (*pieces)[8][5] = +KING;
+    (*pieces)[8][6] = +BISHOP;
+    (*pieces)[8][7] = +KNIGHT;
+    (*pieces)[8][8] = +ROOK;
 
-    for (x = 0; x <= 7; x += 7)
-    {
-        pieces[x][0] = z * ROOK;
-        pieces[x][1] = z * KNIGHT;
-        pieces[x][2] = z * BISHOP;
-        pieces[x][3] = z * QUEEN;
-        pieces[x][4] = z * KING;
-        pieces[x][5] = z * BISHOP;
-        pieces[x][6] = z * KNIGHT;
-        pieces[x][7] = z * ROOK;
+    (*pieces)[1][1] = -ROOK;
+    (*pieces)[1][2] = -KNIGHT;
+    (*pieces)[1][3] = -BISHOP;
+    (*pieces)[1][4] = -QUEEN;
+    (*pieces)[1][5] = -KING;
+    (*pieces)[1][6] = -BISHOP;
+    (*pieces)[1][7] = -KNIGHT;
+    (*pieces)[1][8] = -ROOK;
 
-        z = -1;
-    }
+    (*pieces)[7][1] = +PAWN;
+    (*pieces)[7][2] = +PAWN;
+    (*pieces)[7][3] = +PAWN;
+    (*pieces)[7][4] = +PAWN;
+    (*pieces)[7][5] = +PAWN;
+    (*pieces)[7][6] = +PAWN;
+    (*pieces)[7][7] = +PAWN;
+    (*pieces)[7][8] = +PAWN;
 
-    z = 1;
-
-    for (x = 1; x <= 6; x += 5)
-    {
-        for (y = 0; y <= 7; y++)
-        {
-            pieces[x][y] = z * PAWN;
-        }
-        z = -1;
-    }
-
-
+    (*pieces)[2][1] = -PAWN;
+    (*pieces)[2][2] = -PAWN;
+    (*pieces)[2][3] = -PAWN;
+    (*pieces)[2][4] = -PAWN;
+    (*pieces)[2][5] = -PAWN;
+    (*pieces)[2][6] = -PAWN;
+    (*pieces)[2][7] = -PAWN;
+    (*pieces)[2][8] = -PAWN;
 }
-int movePiece(int *pieceToMove, int *pieceNewPosition, int (*pieces)[][BOARD_SIZE])
+
+int checkForKings(int pieces[][BOARD_SIZE])
+{
+    int kingCount = 0;
+    int i, j;
+
+    for(i=0; i<=8;i++)
+    {
+        for (j=0;j<=8;j++)
+        {
+            if(pieces[i][j]==1 || pieces[i][j]==-1)
+            {
+                kingCount++;
+            }
+        }
+    }
+
+    if(kingCount==2)
+    {
+        // continue playing
+        return 0;
+    }
+    else
+    {
+        // game over
+        return 1;
+    }
+}
+
+int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int whiteBlack)
 {
     int valuePiece;
     int coordLetter, coordNumber;
     int newCoordLetter,newCoordNumber;
+    int pieceToEat;
+    int eating = 0;
 
-    coordNumber=*pieceToMove%10;
-    if(coordNumber>7)
-    {
-        printf("Wrong coordinates\n");
-        //Insert something to make the user go back and change them coordinates
-    }
-    coordLetter=(*pieceToMove-coordNumber)/10;
-    if(coordLetter>7)
-    {
-        printf("Wrong coordinates\n");
-        //Idem
-    }
-    valuePiece=(*pieces)[coordLetter][coordNumber];
+    // get piece to move
+    coordNumber = pieceToMove%10;
+    coordLetter = (pieceToMove-coordNumber)/10;
 
-    newCoordNumber=*pieceNewPosition%10;
-    if(newCoordNumber>7)
+    // what piece is it
+    valuePiece = pieces[coordNumber][coordLetter];
+
+    // new place for piece
+    newCoordNumber = pieceNewPos%10;
+    newCoordLetter = (pieceNewPos-newCoordNumber)/10;
+
+    // something in new place?
+    pieceToEat = pieces[newCoordNumber][newCoordLetter];
+
+    if (pieceToEat != 0)
     {
-        printf("Wrong coordinates\n");
+        eating = 1;
+    }
+
+    if (whiteBlack == 0 && valuePiece < 0)
+    {
+        printf("\nThat's a white piece\n");
         return 1;
     }
-    newCoordLetter=(*pieceNewPosition-newCoordNumber)/10;//Maybe I don't need to subtract that since it's an int(?)
-    if(newCoordLetter>7)
+    if (whiteBlack == 1 && valuePiece > 0)
     {
-        printf("Wrong coordinates\n");
+        printf("\nThat's a black piece\n");
         return 1;
     }
-
-    (*pieces)[coordLetter][coordNumber]=0;
-    (*pieces)[newCoordLetter][newCoordNumber]=valuePiece;
-
-    printf("\nDEBUG: MOVEPIECE OK");
     return 0;
 }

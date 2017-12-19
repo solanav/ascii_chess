@@ -2,7 +2,29 @@
 #include "ctype.h"
 #include "lib.h"
 
-void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
+void movePiece(int *pieceToMove, int *pieceNewPos, int (*pieces)[][BOARD_SIZE])
+{
+    int valuePiece;
+    int coordLetter, coordNumber;
+    int newCoordLetter,newCoordNumber;
+
+    // get piece to move
+    coordNumber = *pieceToMove%10;
+    coordLetter = (*pieceToMove-coordNumber)/10;
+
+    // what piece is it
+    valuePiece = (*pieces)[coordNumber][coordLetter];
+
+    // new place for piece
+    newCoordNumber = *pieceNewPos%10;
+    newCoordLetter = (*pieceNewPos-newCoordNumber)/10;
+
+    // move piece
+    (*pieces)[coordNumber][coordLetter]=0;
+    (*pieces)[newCoordNumber][newCoordLetter]=valuePiece;
+}
+
+int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int *pieceNewPos)
 {
     char temp;
 
@@ -12,9 +34,11 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
     char tempNextPosChar;
     int tempNextPosInt;
 
+    int moveCorrect = 1;
+
     if (*whiteBlack == 0)
     {
-        printf("\nWhite moves\nMove from >>> ");
+        printf("\nMove from >>> ");
         tempPosChar = getchar();
         scanf("%d", &tempPosInt);
 
@@ -30,7 +54,7 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
     }
     else
     {
-        printf("\nBlack moves\nMove from >>> ");
+        printf("\nMove from >>> ");
         tempPosChar = getchar();
         scanf("%d", &tempPosInt);
 
@@ -40,30 +64,63 @@ void getUserMove(int *whiteBlack, int *pieceToMove, int *pieceNewPos)
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
 
-        *whiteBlack = 1;
+        *whiteBlack = 0;
 
         scanf("%c", &temp);
     }
 
-    *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
-    *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
+    int tempPieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
+    int tempPieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
 
-    printf("\nDEBUG: GETUSERMOVE OK");
+    moveCorrect = checkMove(pieces, tempPieceToMove, tempPieceNewPos, *whiteBlack);
 
+    if (moveCorrect == 0)
+    {
+        *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
+        *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
+
+        return 0;
+    }
+    else
+    {
+        if (*whiteBlack == 0)
+        {
+            *whiteBlack = 1;
+        }
+        else
+        {
+            *whiteBlack = 0;
+        }
+
+        return 1;
+    }
+    
 }
 
 void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
 {
     int x, y;
 
-    printf("\nLast move: %d\n", *lastMove);
-    printf("\n");
-    printf("     0  1  2  3  4  5  6  7\n\n");
+    int coordNumber = *lastMove%10;
+    int coordLetter = (*lastMove-coordNumber)/10;
 
-    for (x = 0; x < 8; x++)
+    if (whiteBlack == 0)
     {
-        printf(" %c  ", x+97);
-        for (y = 0; y < 8; y++)
+        printf("White moves");
+    }
+    else 
+    {
+        printf("Black moves");
+    }
+    
+    printf("\nLast move: %c%d\n\n", coordLetter+96, coordNumber);
+    printf("\n");
+    printf("     a  b  c  d  e  f  g  h\n\n");
+
+    for (x = 8; x >= 1; x--)
+    {
+        printf(" %d  ", x);
+        for (y = 1; y <= 8; y++)
         {
             if (pieces[x][y] < 0)
             {
@@ -77,27 +134,6 @@ void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
         printf("\n");
     }
     printf("\n");
-
-    printf("\nDEBUG: DRAWBOARD OK");
-
-}
-
-int checkForKings(int pieces[][BOARD_SIZE])
-{
-  int i, j, oneCount;
-
-  for(i=0; i<7;i++)
-  {
-    for (j=0;j<7;j++)
-    {
-      if(pieces[i][j]==1)
-        oneCount++;
-    }
-  }
-  if(oneCount==2)
-    return 0;
-  else
-    return 1;
 }
 
 int main()
@@ -105,20 +141,41 @@ int main()
     int pieces[BOARD_SIZE][BOARD_SIZE] = {0};
     int gameFinished = 0;
     int whiteBlack = 0;
-    int pieceToMove;
-    int pieceNewPos;
+    int pieceToMove = 0;
+    int pieceNewPos = 0;
+    int moveCorrect = 1;
 
-    initBoard(pieces);
-    drawBoard(pieces, &pieceNewPos, whiteBlack);
+    initBoard(&pieces);
 
     while (gameFinished == 0)
     {
-        getUserMove(&whiteBlack, &pieceToMove, &pieceNewPos);
-        movePiece(&pieceToMove, &pieceNewPos, &pieces);
+        moveCorrect = 0;
+
+        clear(75);
         drawBoard(pieces, &pieceNewPos, whiteBlack);
-        gameFinished=checkForKings(pieces);
+
+        do
+        {
+            moveCorrect = getUserMove(pieces, &whiteBlack, &pieceToMove, &pieceNewPos);
+        } while (moveCorrect == 1);
+
+
+        movePiece(&pieceToMove, &pieceNewPos, &pieces);
+        gameFinished = checkForKings(pieces);
     }
-    printf("GAME OVER");
+
+    clear(75);
+    drawBoard(pieces, &pieceNewPos, whiteBlack);
+
+    printf("GAME OVER\n");
+    if (whiteBlack == 0)
+    {
+        printf("Blacks win\n");
+    }    
+    else
+    {
+        printf("Whites win\n\n");
+    }
 
     return 0;
 }
