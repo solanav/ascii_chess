@@ -228,9 +228,9 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             
             return 0;
         case 2: // queen
-            if (letterDif != 0) // there is horizontal movement
+            if (letterDif != 0)
             {
-                if (numberDif != 0) // there is diagonal movement
+                if (numberDif != 0)
                 {
                     if (letterDif != numberDif && letterDif != -numberDif) // the diagonal is not ok
                     {
@@ -242,9 +242,9 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             }
             return 0;
         case 3: // rook
-            if (letterDif != 0) // there is horizontal movement
+            if (letterDif != 0)
             {
-                if (numberDif != 0) // there is vertical movement
+                if (numberDif != 0)
                 {
                     printf("Rooks don't move diagonally");
                     return 1;
@@ -261,6 +261,39 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             }
             return 0;
         case 5: // knight
+            printf("knight %d\n", numberDif);
+            if (numberDif == letterDif)
+            {
+                printf("Knight can't do that");
+                return 1;
+            }
+            if (letterDif != 0) // there is horizontal movement
+            {
+                if (numberDif == 0) // there isn't vertical movement
+                {
+                    printf("Knight can't do that");
+                    return 1;
+                }
+            }
+            if (numberDif != 0)
+            {
+                if (letterDif == 0)
+                {
+                    printf("Knight can't do that");
+                    return 1;
+                }
+            }
+            if (numberDif > 2)
+            {
+                printf("That \"L\" is too big");
+                return 1;
+            }
+            if (letterDif > 2)
+            {
+                printf("That \"L\" is too big");
+                return 1;
+            }
+
             return 0;
         case 6: // pawn
             if (!eating)
