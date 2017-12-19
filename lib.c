@@ -216,10 +216,10 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
 
     switch (valuePiece)
     {
-        case 0:
+        case 0: // nothing
             printf("\nThere's nothing there\n");
             return 1;
-        case 1:
+        case 1: // king
             if ((numberDif > 1 || numberDif < -1) || (letterDif > 1 || letterDif < -1))
             {
                 printf("King moves 1 step per turn");
@@ -227,15 +227,30 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             }
             
             return 0;
-        case 2:
+        case 2: // queen
             return 0;
-        case 3:
+        case 3: // rook
+            if (letterDif != 0) // si hay movimiento horizontal
+            {
+                if (numberDif != 0) // si hay movimiento vertical
+                {
+                    printf("Rooks don't move diagonally");
+                    return 1;
+                }
+            }
+
             return 0;
-        case 4:
+        case 4: // bishop
+            printf("%d %d", numberDif, letterDif);
+            if (numberDif != letterDif && numberDif != -letterDif)
+            {
+                printf("Bishops only move diagonally");
+                return 1;
+            }
             return 0;
-        case 5:
+        case 5: // knight
             return 0;
-        case 6:
+        case 6: // pawn
             if (!eating)
             {
                 if (whiteBlack == 0)
