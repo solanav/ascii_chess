@@ -205,11 +205,14 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
         return 1;
     }
 
-    // check movement
+    // check piece specific movement
     if (valuePiece < 0)
     {
         valuePiece *= -1;
     }
+
+    int numberDif = newCoordNumber - coordNumber;
+    int letterDif = newCoordLetter - coordLetter;
 
     switch (valuePiece)
     {
@@ -217,11 +220,12 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             printf("\nThere's nothing there\n");
             return 1;
         case 1:
-            if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 1)
+            if ((numberDif > 1 || numberDif < -1) || (letterDif > 1 || letterDif < -1))
             {
-                printf("Movement not allowed");
+                printf("King moves 1 step per turn");
                 return 1;
             }
+            
             return 0;
         case 2:
             return 0;
@@ -236,46 +240,73 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             {
                 if (whiteBlack == 0)
                 {
-                    if (newCoordNumber - coordNumber == 2 && coordNumber != 2)
+                    if (numberDif != 2 && numberDif != 1)
                     {
-                        printf("Movement not allowed\n");
+                        printf("Pawns move either 1 or 2 positions ahead\n");
                         return 1;
                     }
-                    else if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 0)
+                    else
                     {
-                        printf("Movement not allowed\n");
-                        return 1;
+                        if (letterDif != 0)
+                        {
+                            printf("Diagonal movement with pawn not allowed\n");
+                            return 1;
+                        }
+                        else if (numberDif == 2)
+                        {
+                            if (coordNumber != 2)
+                            {
+                                printf("Can't move 2 positions ahead from there\n");
+                                return 1;
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    if (newCoordNumber - coordNumber == -2 && coordNumber != 7)
+                    if (numberDif != -2 && numberDif != -1)
                     {
-                        printf("Movement not allowed\n");
+                        printf("Pawns move either 1 or 2 positions ahead\n");
                         return 1;
                     }
-                    else if (newCoordNumber - coordNumber != -2 && newCoordNumber - coordNumber != -1 || newCoordLetter - coordLetter != 0)
+                    else
                     {
-                        printf("Movement not allowed\n");
-                        return 1;
+                        if (letterDif != 0)
+                        {
+                            printf("Diagonal movement with pawn not allowed\n");
+                            return 1;
+                        }
+                        else if (numberDif == -2)
+                        {
+                            if (coordNumber != 7)
+                            {
+                                printf("Can't move 2 positions ahead from there\n");
+                                return 1;
+                            }
+                        }
                     }
                 }
             }
             else
             {
+                if (letterDif != 1 && letterDif != 0)
+                {
+                    printf("Pawns have to eat diagonally");
+                    return 1;
+                }
                 if (whiteBlack == 0)
                 {
-                    if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 1)
+                    if (numberDif != 1)
                     {
-                        printf("Movement not allowed\n");
+                        printf("Can't eat like that\n");
                         return 1;
                     }
                 }
                 else
                 {
-                    if (newCoordNumber - coordNumber != -1 || newCoordLetter - coordLetter != 1)
+                    if (numberDif != -1)
                     {
-                        printf("Movement not allowed\n");
+                        printf("Can't eat like that\n");
                         return 1;
                     }
                 }
