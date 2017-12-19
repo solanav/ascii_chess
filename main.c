@@ -36,6 +36,13 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
 
     int moveCorrect = 1;
 
+    int coordLetter, coordNumber;
+    int newCoordLetter, newCoordNumber;
+
+    FILE *f;
+
+    printf("Insert coordinates in the following format: \"b2\"");
+
     if (*whiteBlack == 0)
     {
         printf("\nMove from >>> ");
@@ -84,13 +91,31 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
         *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
         *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
 
+        // get piece to move
+        coordNumber = *pieceToMove%10;
+        coordLetter = (*pieceToMove-coordNumber)/10;
+
+        // new place for piece
+        newCoordNumber = *pieceNewPos%10;
+        newCoordLetter = (*pieceNewPos-newCoordNumber)/10;
+
+        f=fopen("move_history.log", "a+");
+        if (*whiteBlack == 0)
+        {
+          fprintf(f, "White moved from %c%d to %c%d\n", coordLetter+96, coordNumber, newCoordLetter+96, newCoordNumber);
+        }
+        else
+        {
+          fprintf(f, "Black moved from %c%d to %c%d\n", coordLetter+96, coordNumber, newCoordLetter+96, newCoordNumber);
+        }
+
+        fclose(f);
         return 0;
     }
     else
     {
         return 1;
     }
-    
 }
 
 void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
@@ -104,11 +129,11 @@ void drawBoard(int pieces[][BOARD_SIZE], int *lastMove, int whiteBlack)
     {
         printf("White moves");
     }
-    else 
+    else
     {
         printf("Black moves");
     }
-    
+
     printf("\nLast move: %c%d\n\n", coordLetter+96, coordNumber);
     printf("\n");
     printf("     a  b  c  d  e  f  g  h\n\n");
@@ -167,7 +192,7 @@ int main()
     if (whiteBlack == 0)
     {
         printf("Blacks win\n");
-    }    
+    }
     else
     {
         printf("Whites win\n\n");
