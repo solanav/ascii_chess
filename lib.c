@@ -152,7 +152,25 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
     newCoordNumber = pieceNewPos%10;
     newCoordLetter = (pieceNewPos-newCoordNumber)/10;
 
-    // something in new place?
+    // coords inside bounds?
+    if (coordNumber < 1 || coordNumber > 8)
+    {
+        if (coordLetter < 1 || coordLetter > 8)
+        {
+            printf("Coordinates out of bounds");
+            return 1;
+        }
+    }
+    else if (newCoordNumber < 1 || newCoordNumber > 8)
+    {
+        if (newCoordLetter < 1 || newCoordLetter > 8)
+        {
+            printf("Coordinates out of bounds");
+            return 1;
+        }
+    }
+
+    // eating?
     pieceToEat = pieces[newCoordNumber][newCoordLetter];
 
     if (pieceToEat != 0)
@@ -160,15 +178,113 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
         eating = 1;
     }
 
-    if (whiteBlack == 0 && valuePiece < 0)
+    // eating yourself?
+    if (eating)
+    {
+        if (whiteBlack == 0 && pieceToEat < 0)
+        {
+            printf("Can't eat yourself\n");
+            return 1;
+        }
+        else if (whiteBlack == 1 && pieceToEat > 0)
+        {
+            printf("Can't eat yourself\n");
+            return 1;
+        }
+    }
+
+    // are you moving your own pieces?
+    if (whiteBlack == 1 && valuePiece < 0)
     {
         printf("\nThat's a white piece\n");
         return 1;
     }
-    if (whiteBlack == 1 && valuePiece > 0)
+    if (whiteBlack == 0 && valuePiece > 0)
     {
         printf("\nThat's a black piece\n");
         return 1;
     }
+
+    // check movement
+    if (valuePiece < 0)
+    {
+        valuePiece *= -1;
+    }
+
+    switch (valuePiece)
+    {
+        case 0:
+            printf("\nThere's nothing there\n");
+            return 1;
+        case 1:
+            if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 1)
+            {
+                printf("Movement not allowed");
+                return 1;
+            }
+            return 0;
+        case 2:
+            return 0;
+        case 3:
+            return 0;
+        case 4:
+            return 0;
+        case 5:
+            return 0;
+        case 6:
+            if (!eating)
+            {
+                if (whiteBlack == 0)
+                {
+                    if (newCoordNumber - coordNumber == 2 && coordNumber != 2)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                    else if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 0)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    if (newCoordNumber - coordNumber == -2 && coordNumber != 7)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                    else if (newCoordNumber - coordNumber != -2 && newCoordNumber - coordNumber != -1 || newCoordLetter - coordLetter != 0)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                }
+            }
+            else
+            {
+                if (whiteBlack == 0)
+                {
+                    if (newCoordNumber - coordNumber != 1 || newCoordLetter - coordLetter != 1)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    if (newCoordNumber - coordNumber != -1 || newCoordLetter - coordLetter != 1)
+                    {
+                        printf("Movement not allowed\n");
+                        return 1;
+                    }
+                }
+            }
+
+            return 0;
+        default:
+            printf("Default");
+    }
+    
     return 0;
 }

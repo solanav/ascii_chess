@@ -48,8 +48,6 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
 
-        *whiteBlack = 1;
-
         scanf("%c", &temp);
     }
     else
@@ -64,8 +62,6 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
         tempNextPosChar = getchar();
         scanf("%d", &tempNextPosInt);
 
-        *whiteBlack = 0;
-
         scanf("%c", &temp);
     }
 
@@ -76,13 +72,6 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
 
     if (moveCorrect == 0)
     {
-        *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
-        *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
-
-        return 0;
-    }
-    else
-    {
         if (*whiteBlack == 0)
         {
             *whiteBlack = 1;
@@ -92,6 +81,13 @@ int getUserMove(int pieces[][BOARD_SIZE], int *whiteBlack, int *pieceToMove, int
             *whiteBlack = 0;
         }
 
+        *pieceToMove = coordsToInt(tempPosChar)*10 + tempPosInt;
+        *pieceNewPos = coordsToInt(tempNextPosChar)*10 + tempNextPosInt;
+
+        return 0;
+    }
+    else
+    {
         return 1;
     }
     
