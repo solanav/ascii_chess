@@ -228,11 +228,23 @@ int checkMove(int pieces[][BOARD_SIZE], int pieceToMove, int pieceNewPos, int wh
             
             return 0;
         case 2: // queen
+            if (letterDif != 0) // there is horizontal movement
+            {
+                if (numberDif != 0) // there is diagonal movement
+                {
+                    if (letterDif != numberDif && letterDif != -numberDif) // the diagonal is not ok
+                    {
+                        printf("Can't move like that the queen");
+                        return 1;
+                    }
+                }
+                
+            }
             return 0;
         case 3: // rook
-            if (letterDif != 0) // si hay movimiento horizontal
+            if (letterDif != 0) // there is horizontal movement
             {
-                if (numberDif != 0) // si hay movimiento vertical
+                if (numberDif != 0) // there is vertical movement
                 {
                     printf("Rooks don't move diagonally");
                     return 1;
