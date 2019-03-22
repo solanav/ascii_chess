@@ -1,4 +1,2 @@
-# ascii_chess
-Cli chess made in C
-
 # Kept for memories
+One of my first programs in C (it's very bad).
